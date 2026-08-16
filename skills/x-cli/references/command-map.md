@@ -21,6 +21,16 @@ x-cli timeline user @handle [--count N] [--cursor CURSOR] [--all] [--max-pages N
 x-cli tweet get <tweet_id_or_url>
 ```
 
+## Bookmarks
+
+```bash
+x-cli bookmarks [--count N] [--cursor CURSOR] [--all] [--max-pages N]
+```
+
+Lists the authenticated user's own bookmarked tweets. Uses the `Bookmarks`
+GraphQL operation; its query ID rotates on X deploys like the others, so refresh
+`Endpoints["Bookmarks"]` in `internal/api/endpoints.go` if it starts returning 404.
+
 ## User
 
 ```bash
