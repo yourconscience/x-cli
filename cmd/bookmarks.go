@@ -53,18 +53,24 @@ func paginateBookmarks(client *api.Client, fetch timelineFetcher) error {
 			return err
 		}
 
-		if jsonOutput {
-			output.PrintTweets(nil, true, rawJSON)
-		} else {
-			output.PrintTweets(result.Tweets, false, nil)
+		if len(result.Tweets) > 0 {
+			if jsonOutput {
+				output.PrintTweets(nil, true, rawJSON)
+			} else {
+				output.PrintTweets(result.Tweets, false, nil)
+			}
+			total += len(result.Tweets)
 		}
 
-		total += len(result.Tweets)
-		cursor = result.NextCursor
-
-		if cursor == "" || len(result.Tweets) == 0 {
+		// X ends the bookmark timeline with a cursor-only page whose Bottom
+		// cursor repeats the previous one. Terminate on the cursor no longer
+		// advancing rather than on an empty tweet list, so an occasional page
+		// that parses zero tweets (e.g. all tombstones) does not cut
+		// pagination short and miss later bookmarks.
+		if result.NextCursor == "" || result.NextCursor == cursor {
 			break
 		}
+		cursor = result.NextCursor
 
 		// Respect rate limits between pages.
 		if client.LastRateLimit != nil {
