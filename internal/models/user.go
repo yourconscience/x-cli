@@ -78,10 +78,21 @@ type UserSummary struct {
 
 // ParseUserSummary extracts a compact user from a tweet's core.user_results.result.
 func ParseUserSummary(r gjson.Result) UserSummary {
+	// X is migrating user fields from `legacy` to `core`. Some timelines
+	// (e.g. Bookmarks) still return name/screen_name only under `legacy`,
+	// so fall back to it when `core` is absent.
+	name := r.Get("core.name").String()
+	if name == "" {
+		name = r.Get("legacy.name").String()
+	}
+	screenName := r.Get("core.screen_name").String()
+	if screenName == "" {
+		screenName = r.Get("legacy.screen_name").String()
+	}
 	return UserSummary{
 		ID:              r.Get("rest_id").String(),
-		Name:            r.Get("core.name").String(),
-		ScreenName:      r.Get("core.screen_name").String(),
+		Name:            name,
+		ScreenName:      screenName,
 		IsBlueVerified:  r.Get("is_blue_verified").Bool(),
 		ProfileImageURL: r.Get("avatar.image_url").String(),
 	}

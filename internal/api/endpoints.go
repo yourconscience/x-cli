@@ -87,4 +87,11 @@ var Endpoints = map[string]EndpointDef{
 		HasFeatures:     true,
 		HasFieldToggles: true,
 	},
+	"Bookmarks": {
+		QueryID:         "2neUNDqrrFzbLui8yallcQ",
+		OperationName:   "Bookmarks",
+		Method:          "GET",
+		HasFeatures:     true,
+		HasFieldToggles: true,
+	},
 }
