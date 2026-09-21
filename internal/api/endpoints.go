@@ -94,4 +94,11 @@ var Endpoints = map[string]EndpointDef{
 		HasFeatures:     true,
 		HasFieldToggles: true,
 	},
+	"Likes": {
+		QueryID:         "XHn_Tw60c6pi0n3DGhpwiA",
+		OperationName:   "Likes",
+		Method:          "GET",
+		HasFeatures:     true,
+		HasFieldToggles: true,
+	},
 }
